@@ -1,0 +1,121 @@
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+    <%- include('layout/sidebar') %>
+      <div class="col py-3">
+        <%- include('layout/navbar')%>
+          <!-- Body... -->
+          <div class="container card_hover shadow-none p-3 mb-5 mt-3 bg-light rounded">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="header d-flex justify-content-between pt-3">
+                  <h5>Users Page</h5>
+                  <form class="d-flex" action="users" method="get">
+                    <input value="<%= query.search %>" class="form-control me-2" name="search" type="search"
+                      placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+                </div>
+
+                <!-- Table -->
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col">Location</th>
+                      <th scope="col" class="text-center">Status</th>
+                      <th class=" text-end" scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="align-middle">
+                    <p>
+                      <% data.forEach((user, index)=> { %>
+                        <tr>
+                          <th scope="row">
+                            <%=index+1+Number(skip)%>
+                          </th>
+                          <td>
+                            <%=user.first_name%>
+                              <%=user.last_name%>
+                          </td>
+                          <td>
+                            <%=user.email%>
+                          </td>
+                          <td>+<%=user.country_code%>
+                              <%=user.phone_number%>
+                          </td>
+                          <td>
+                            <%=user.address?user.address.location+", "+user.address.country:''%></td>
+                                        <td>
+                                          <div class=" form-check form-switch d-flex justify-content-center">
+                              <input class="form-check-input color-yellow" type="checkbox" role="switch"
+                                id="flexSwitchCheckChecked" checked>
+              </div>
+              </td>
+              <td class="row ju">
+                <div class="d-flex justify-content-end">
+                  <div class="p-1 bd-highlight">
+                    <button type="button" class="btn btn-outline-primary">
+                      <i class="fa-regular fa-eye"></i>
+                    </button>
+                  </div>
+                  <!-- <div class="p-1 bd-highlight">
+                                              <button type="button" class="btn btn-outline-primary">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                              </button>
+                                            </div> -->
+                  <div class="p-1 bd-highlight">
+                    <button type="button" class="btn btn-outline-danger">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+              </tr>
+              <% }) %>
+                </p>
+                </tbody>
+                </table>
+                <!-- Table End -->
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-end">
+                  <nav aria-label="Page navigation">
+                    <ul class="pagination mt-4">
+                      <% if (Number(query.page||1)> 1) { %>
+                        <li class="page-item">
+                          <a class="page-link" href="?page=<%= Number(query.page||1) - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        <% } %>
+
+                          <% for (let i=1; i <=(total_records/Number(limit)); i++) { %>
+                            <li class="page-item <%= Number(query.page||1) === i ? 'active' : '' %>">
+                              <a class="page-link" href="?page=<%= i %>">
+                                <%= i %>
+                              </a>
+                            </li>
+                            <% } %>
+
+                              <% if (Number(query.page||1) < (total_records/Number(limit))) { %>
+                                <li class="page-item">
+                                  <a class="page-link" href="?page=<%= Number(query.page||1) + 1 %>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                </li>
+                                <% } %>
+                    </ul>
+                  </nav>
+                </div>
+                <!-- Pagination End -->
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<%- include('layout/footer')%>
